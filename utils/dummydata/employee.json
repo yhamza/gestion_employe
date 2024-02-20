@@ -1,0 +1,17 @@
+{
+  "id": "6a6f3c91-76a6-4ea3-b67c-2874f682e1e8",
+  "birthDate": "1991-11-07",
+  "email": "leanne.graham@johns-group.com",
+  "name": "Leanne Graham",
+  "position": "FullStack Developer",
+  "role": "DEVELOPER | RH | PROJECT-MANAGER",
+  "projects": [
+    "8ba881f2-a6a1-4d48-bbff-c915a48fdfbe",
+    "f40a3522-b2e3-49d8-9476-519c4e73bc7f"
+  ],
+  "recrutementDate": "2017-06-15",
+  "gender": "female",
+  "score": 78,
+  "salary": 2500,
+  "team": "A"
+}
