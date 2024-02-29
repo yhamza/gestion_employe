@@ -1,33 +1,33 @@
 const express=require('express');
+const mongoose = require('mongoose');
+const path = require("path");
+const bodyParser = require('body-parser');
+
+const cookieParser = require('cookie-parser');
+const dbConnection = require('./config/database')
+
+require('dotenv').config();
+
+
+
 const app=express();
 
 
-//.env
-require('dotenv').config();
-const port=process.env.PORT;
-//path
-const path = require("path");
-//cookieParser
-const cookieParser = require('cookie-parser');
+
+
 app.use(cookieParser());
-//json
 app.use(express.json())
-//bodyParser
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded());
 
 //connect to db
-const mongoose = require('mongoose');
-const dbConnection = require('./config/database');
 const url=process.env.URL;
 dbConnection(url);
 
 
 
-//routes
 app.use(require('./routes/main'))
 
-
-app.listen(port,(req,res)=>{
+const port=process.env.PORT;
+app.listen(port,()=>{
     console.log(`server start on ${port}`);
 })
