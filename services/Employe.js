@@ -2,7 +2,7 @@ const EmployeModel = require('../models/employe');
 const hideSensitiveInfo = require("../utils/hideSensitiveInfo");
 module.exports = class Employe {
 
-    //profile
+    //get profile
     static profile=async (req,res,next)=>{
         try{
             let user=await EmployeModel.findById(req.params.userId);
@@ -16,7 +16,7 @@ module.exports = class Employe {
         }
 }
 
-    //Create
+    //Create employe
     static create=async (req,res,next)=>{
         try{
             const newEmployee= new EmployeModel({
@@ -49,72 +49,29 @@ module.exports = class Employe {
     }
 
 
-    //find by name
-    static findByName=async (req,res,next)=>{
-        try {
-            const findEmploye = await EmployeModel.find({ name: req.body.name });
-            
-            if (!findEmploye || findEmploye.length === 0) {
-                return res.status(404).json({ error: "No employee found with the given name" });
-            }
-            const data =await  hideSensitiveInfo(req,res,findEmploye)
-            res.status(200).json({ message: "Employee(s):", data: data });
-        } catch (err) {
-            console.error("Error finding employee by name:", err);
-            res.status(500).json({ error: "Error finding employee by name" });
-        }
-    }
-
-    //find by role
-    static findByRole=async (req,res,next)=>{
-        try {
-            const findEmploye = await EmployeModel.find({ role: req.body.role });
-            if (!findEmploye) {
-                res.status(404).json({ error: "any employe  founded by role" });
-            }
-            const data =await  hideSensitiveInfo(req,res,findEmploye)
-            res.status(200).json({ message: "Employee(s):", data: data });
-
-        } catch (err) {
-            console.log("Error finding employee by role:", err);
-            res.status(500).json({ error: "Error finding employee by role" });
-        }
-
-    }
-
-    //find by project_id
-    static findByProjectId=async (req,res,next)=>{
-        try {
-            let findEmploye = await EmployeModel.find({project:req.params.projectId});
-            if (!findEmploye) {
-                res.status(404).json({ error: "any employe  founded by project id" });
-            }
-            const data =await  hideSensitiveInfo(req,res,findEmploye)
-            res.status(200).json({ message: "Employee(s):", data: data });
-        } catch (err) {
-            console.log("Error finding employee by project id:", err);
-            res.status(500).json({ error: "Error finding employee by project id" });
-        }
-
-    }
-
-    //find by name_role,project id
+    //filter by name_role,project id
     static findBy_Name_Role_projectId = async (req, res, next) => {
-
         try {
-            const name=req.body.name;
-            const role=req.body.role;
-            const projectId=req.params.projectId;
-            let findEmploye=await EmployeModel.find({name:name,role:role,project:projectId})
-            if( findEmploye.length == 0){
-                findEmploye=await EmployeModel.find();
+            let findEmploye;
 
+            const { name, role } = req.body;
+            const projectId = req.params.projectId;
+
+            if (!name && !role && !projectId) {
+                findEmploye = await EmployeModel.find();
+            } else {
+                const query = {};
+                if (name) query.name = name;
+                if (role) query.role = role;
+                if (projectId) query.projectId = projectId;
+                findEmploye = await EmployeModel.find(query);
             }
-            const data =await  hideSensitiveInfo(req,res,findEmploye)
+
+            const data = await hideSensitiveInfo(req, res, findEmploye);
             res.status(200).json({ message: "Employee(s):", data: data });
-        } catch(err){
-            console.log("Error finding employee by name,role,project_id:",err);
-            res.status(500).json({ error: "Error finding employee by name,role,project_id" });
+        } catch (err) {
+            console.log("Error finding employee by name, role, project_id:", err);
+            res.status(500).json({ error: "Error finding employee by name, role, project_id" });
         }
     }
 
