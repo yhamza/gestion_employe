@@ -4,7 +4,7 @@ const EmployeModel = require("../models/employe");
 
 module.exports = class Project {
 
-    //create
+    //CREATE PROJECT
     static create=async (req,res,next)=>{
         const {name,repo}=req.body;
         try {
@@ -26,22 +26,22 @@ module.exports = class Project {
 
     }
 
-    //all project
+    //TO GET ALL PROJECT
     static allProject = async (req, res, next) => {
         try {
             let result = await ProjectModel.find();
             if (result) {
-                res.status(200).json({ message: "All projects", result }); // Utilisation correcte de res.status().json()
+                res.status(200).json({ message: "All projects", result });
             } else {
-                res.status(404).json({ message: "No projects found" }); // Retourner une réponse 404 si aucun projet n'est trouvé
+                res.status(404).json({ message: "No projects found" });
             }
         } catch (err) {
-            res.status(500).json({ message: "Error finding projects", error: err }); // Utilisation de 500 pour les erreurs internes du serveur
-            console.error("Error finding projects", err); // Utilisation de console.error() pour les messages d'erreur
+            res.status(500).json({ message: "Error finding projects", error: err });
+            console.error("Error finding projects", err);
         }
     };
 
-    //delete
+    //DELETE PROJECT
     static delete=async (req,res,next)=>{
         const projectId=req.params.projectId;
         try {
@@ -58,8 +58,7 @@ module.exports = class Project {
 
     }
 
-    //  assign / unassign an employee to a project
-    //  an employee can be assigned to multiple projects.
+    //  ASSIGN / UNASSIGN AN EMPLOYE TO A PROJECT
     static assign=async (req,res,next)=>{
         try{
             const idEmployee=req.body.idEmployee;
